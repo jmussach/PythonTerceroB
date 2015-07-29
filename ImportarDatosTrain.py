@@ -5,3 +5,5 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 DatosTrain=pd.read_csv('data\DatosEntrenFiltrados.csv',index_col=0)
+
+print DatosTrain.head(2)
