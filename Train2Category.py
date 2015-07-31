@@ -1,44 +1,36 @@
-__author__ = 'David'
+__author__ = 'david'
+__author__ = 'david'
 
-import json
-from shapely.geometry import shape,Point
-from shapely.geometry import MultiPolygon,mapping
-
-# load GeoJSON file containing sectors
-#with ('data/tercerob_layers.geo.json', 'r') as f:
-#    js = json.load(f)
+from shapely.geometry import mapping,shape,Point
 import pygeoj
-js = pygeoj.load("spain-communities.geojson")
+import pandas as pd
 
-# construct point based on lat/long returned by geocoder
-#point1 = Point(43.360106, -5.896892)
-import csv
-with open('some.csv', 'rb') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        print row
-#####
-from fiona import collection
+DatosTrain=pd.read_csv("data/DatosEntrenFiltrados.csv",index_col=0)
 
-schema = { 'geometry': 'Point', 'properties': { 'name': 'str' } }
-with collection(
-    "some.shp", "w", "ESRI Shapefile", schema) as output:
-    with open('some.csv', 'rb') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            point = Point(float(row['lon']), float(row['lat']))
-            output.write({
-                'properties': {
-                    'name': row['name']
-                },
-                'geometry': mapping(point)
-            })
-####
+#Seleccionamos las columnas de longitud y latitud
+LongLat=DatosTrain.loc[:,['lng','lat']]
+
+for i in range(1,len(LongLat.index)):
+    PuntoCoord=LongLat.iloc[i].values
+    print PuntoCoord
+
+    if i==10:
+        break
+
+    Lat=LatLong.iloc[0,:]
+    Lng=LatLong.iloc[1]
+    print Lat
+    print Lng
+
+js = pygeoj.load("data/spain-communities.geojson")
+
+point1 = Point(Lng,Lat)
+
+
 # check each polygon to see if it contains the point
 for feature in js:
     polygon = shape(feature.geometry)
+    print polygon.contains(point1)
     if polygon.contains(point1):
-        print 'Found containing polygon:', feature
-
-
+        print 'Found containing polygon:', feature.properties['name']
 
