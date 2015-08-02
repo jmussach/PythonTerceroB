@@ -1,7 +1,7 @@
 __author__ = 'david'
 __author__ = 'david'
 
-from shapely.geometry import mapping,shape,Point
+from shapely.geometry import shape,Point
 import pygeoj
 import pandas as pd
 
@@ -11,16 +11,15 @@ DatosTrain=pd.read_csv("data/DatosEntrenFiltrados.csv",index_col=0)
 LongLat=DatosTrain.loc[:,['lng','lat']]
 
 for i in range(1,len(LongLat.index)):
-    PuntoCoord=LongLat.iloc[i].values
+    PuntoCoord=LongLat.iloc[i]
     print PuntoCoord
-
+    Lat=PuntoCoord.values[0]
+    Lng=PuntoCoord.values[1]
+    print Lat," y ",Lng
     if i==10:
         break
 
-    Lat=LatLong.iloc[0,:]
-    Lng=LatLong.iloc[1]
-    print Lat
-    print Lng
+
 
 js = pygeoj.load("data/spain-communities.geojson")
 
