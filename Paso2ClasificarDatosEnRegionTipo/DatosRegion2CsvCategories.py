@@ -1,26 +1,35 @@
-def DatosRegion2CsvCategories(DatosRegion,NomColumFilter ):
-    #Es una función que a partir de un csv con datos con regiones "DatosRegion" los filtra por regiones,
-#y tipos y los guarda en multiples csv según los nombres de columna escogidos
+def DatosRegion2CsvCategories(DatosRegion):
+    #Es una funcion que a partir de un csv con datos con regiones "DatosRegion" los filtra por regiones,
+    #tipos y subtipos los guarda en multiples csv segun la Categoria Region-Tipo-Subtipo
 
-import pandas as pd
+    import pandas as pd
 
+    #Cargamos los datos
+    Datos=pd.read_csv(DatosRegion,sep=";",index_col=0)
+    Datos=pd.DataFrame(Datos)
 
-Datos=pd.read_csv(DatosRegion,sep=";",index_col=0)''
-Datos=pd.DataFrame(Datos)
+    #Seleccion datos region y sus niveles
+    DatosRegion = Datos["Region"]
+    LevelsRegion =set(DatosRegion)
 
-for Columnas in NomClomunFilter:
-
+    #Seleccion datos type y sus niveles
     DatosType = Datos["type"]
     LevelsType=set(DatosType)
 
-    DatosRegion = Datos["Region"]
-    LevelsRegion =list(set(DatosRegion))
+    #Seleccion datos subType y sus niveles
+    DatossubType = Datos["subType"]
+    LevelssubType=set(DatossubType)
 
+    #Hacemos un bucle para cada nivel de categoria y se guardan las datos filtrados en un csv
     for province in LevelsRegion:
-     for typebuild in LevelsType:
-        DatosFiltrados= Datos[(Datos.type==typebuild)&(Datos.Region==province)]
-        CsvFileName="DataOutput/"+str(province)+str(typebuild)+".csv"
-        #CsvFileName="outputData/"+'%s'+'.csv' % str(province)#str(typebuild)
-        DatosFiltrados.to_csv(CsvFileName,sep=";",encoding="UTF-8")
+         for typebuild in LevelsType:
+             for subTypebuild in LevelssubType:
+                 DatosFiltrados= Datos[(Datos.type==typebuild)&(Datos.Region==province)&(Datos.subType==subTypebuild)]
+                 #Un filtro para que no guarde csv vacios
 
-DatosRegion2CsvCategories("DataInput/TrainWithRegion1000.csv", ["Region","type"])
+                 if len(DatosFiltrados)!=0:
+                    CsvFileName="DataOutput/"+str(province)+"_"+str(typebuild)+"_"+str(subTypebuild)+".csv"
+                    print CsvFileName
+                    DatosFiltrados.to_csv(CsvFileName,sep=";",encoding="UTF-8")
+
+DatosRegion2CsvCategories("DataInput/DatosConComunidad.csv")
