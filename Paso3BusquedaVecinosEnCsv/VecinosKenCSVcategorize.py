@@ -26,7 +26,7 @@ def punto2vecinosk(PuntoDic,kv):
     tree =sk.BallTree(LatLong,metric="haversine")#Calcula la distancia Habersine de todos los puntos entre si
     #y los ordena en estructura de arbol
     dist, ind = tree.query(Punto, k=kv)
-    print Datos.iloc[ind[0],:]
+    #print Datos.iloc[ind[0],:]
     return Datos.iloc[ind[0],:]
 
 punto2vecinosk({'lat':[41.38465786],'lng':[2.08005229],'Region':["Cataluña"],'type':["house"],'subType':["Vacio"]},15)
