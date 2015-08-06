@@ -9,25 +9,24 @@ def punto2vecinosk(PuntoDic,kv):
     import pandas as pd
     import sklearn.neighbors as sk
 
-    #Cargar el punto como Diccionario
-    #PuntoDic={'lat':[41.38465786],'lng':[2.08005229],'Region':["Cataluña"],'type':["house"],'subType':["Vacio"]}
-    PuntoDic=pd.DataFrame(PuntoDic)
+    CSVdireccion="DataCategorize/"+PuntoDic['Region']+"_"+PuntoDic['type']+"_"+PuntoDic['subType']+".csv"
 
-    CSVdireccion="DataCategorize/"+PuntoDic.iloc[0]['Region']+"_"+PuntoDic.iloc[0]['type']+"_"+PuntoDic.iloc[0]['subType']+".csv"
+    Datos=pd.read_csv(CSVdireccion,sep=";",index_col=0,encoding="UTF-8")
 
-    Datos=pd.read_csv(CSVdireccion,sep=";",index_col=0)
-    #print Datos.columns
     LatLong=Datos.loc[:,['lat','lng']].values
-    #print LatLong
 
-    Punto=[PuntoDic.iloc[0]['lat'],PuntoDic.iloc[0]['lng']]
+    Punto=[PuntoDic['lat'],PuntoDic['lng']]
 
-    #print LatLong
     tree =sk.BallTree(LatLong,metric="haversine")#Calcula la distancia Habersine de todos los puntos entre si
     #y los ordena en estructura de arbol
     dist, ind = tree.query(Punto, k=kv)
-    #print Datos.iloc[ind[0],:]
-    return Datos.iloc[ind[0],:]
+    return Datos.iloc[ind[0]]
 
-punto2vecinosk({'lat':[41.38465786],'lng':[2.08005229],'Region':["Cataluña"],'type':["house"],'subType':["Vacio"]},15)
+
+import pandas as pd
+Datos=pd.read_csv("DataInput/DatosAValorarConRegion.csv",sep=";",index_col=0,encoding="UTF-8")
+
+print punto2vecinosk(Datos.iloc[2],6)
+
+#punto2vecinosk({'lat':[41.38465786],'lng':[2.08005229],'Region':["Cataluña"],'type':["house"],'subType':["Vacio"]},15)
 
