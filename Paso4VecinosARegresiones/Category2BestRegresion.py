@@ -5,12 +5,21 @@ import pandas as pd
 import numpy as np
 import statsmodels.api as sm
 
-InmuebleAValorar={'lat':[41.38465786],'lng':[2.08005229],'Region':["Cataluña"],'type':["house"],'subType':["Vacio"]}
+DatosAValorar=pd.read_csv("DataInput/DatosAValorarConRegion.csv",sep=";",index_col=0,encoding="UTF-8")
+
+DatosAValorar.iloc[0]
 #Vecinos=punto2vecinosk(InmuebleAValorar,6)
 
-PuntoDic=pd.DataFrame(InmuebleAValorar)
+PuntoDic=DatosAValorar.iloc[0]
 CSVdireccion="DataCategorize/"+PuntoDic.iloc[0]['Region']+"_"+PuntoDic.iloc[0]['type']+"_"+PuntoDic.iloc[0]['subType']+".csv"
 Datos=pd.read_csv(CSVdireccion,sep=";",index_col=0)
+
+LatLong=Datos.loc[:,['lat','lng']].values
+#Calculamos la distancia de todos con todos para cada categoria BallTree con Haversine
+tree =sk.BallTree(LatLong,metric="haversine")#Calcula la distancia Habersine de todos los puntos entre si
+#y los ordena en estructura de arbol
+dist, ind = tree.query(Datos[0], k=6)
+Datos.iloc[ind[0]]
 
 T=len(Datos)
 Tr=round(0.75*T) #Muestra de entrenamiento
