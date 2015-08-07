@@ -106,7 +106,7 @@ if Splanta > 0:
     desvplantaplus = np.zeros((T))
     desvplantamin = np.zeros((T))
 
-# genero las variables que miden asimetrias positivas frente a negativas
+# genero las variables que miden asimetrias positivas frente a negativas jkjk
 for i in range(T):
     if desvm2[i] > 0:
         desvm2plus[i] = desvm2[i]
