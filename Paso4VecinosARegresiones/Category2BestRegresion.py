@@ -8,9 +8,6 @@ import sklearn.neighbors as sk
 
 DatosAValorar=pd.read_csv("DataInput/DatosAValorarConRegion.csv",sep=";",index_col=0,encoding="UTF-8")
 
-DatosAValorar.iloc[0]
-#Vecinos=punto2vecinosk(InmuebleAValorar,6)
-
 PuntoDic=DatosAValorar.iloc[0]
 CSVdireccion="DataCategorize/"+PuntoDic['Region']+"_"+PuntoDic['type']+"_"+PuntoDic['subType']+".csv"
 Datos=pd.read_csv(CSVdireccion,sep=";",index_col=0)
